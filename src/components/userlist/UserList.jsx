@@ -2,6 +2,20 @@ import { USERS } from '../../constants/user';
 import UserCard from '../usercard/UserCard';
 import { ListContainer } from './UserList.styles';
 
+const UserList = ({ showActiveOnly, sortOption, searchTerm }) => {
+  const filteredUsers = filterActiveUsers(USERS, showActiveOnly);
+  const searchedUsers = filterByName(filteredUsers, searchTerm);
+  const sortedUsers = sortUsers(searchedUsers, sortOption);
+
+  return (
+    <ListContainer>
+      {sortedUsers.map(user => (
+        <UserCard key={user.userId} user={user} />
+      ))}
+    </ListContainer>
+  );
+};
+
 const filterActiveUsers = (users, showActiveOnly) => {
   return showActiveOnly ? users.filter(user => user.active) : users;
 };
@@ -21,18 +35,5 @@ const sortUsers = (users, sortOption) => {
   });
 };
 
-const UserList = ({ showActiveOnly, sortOption, searchTerm }) => {
-  const filteredUsers = filterActiveUsers(USERS, showActiveOnly);
-  const searchedUsers = filterByName(filteredUsers, searchTerm);
-  const sortedUsers = sortUsers(searchedUsers, sortOption);
-
-  return (
-    <ListContainer>
-      {sortedUsers.map(user => (
-        <UserCard key={user.userId} user={user} />
-      ))}
-    </ListContainer>
-  );
-};
 
 export default UserList;
